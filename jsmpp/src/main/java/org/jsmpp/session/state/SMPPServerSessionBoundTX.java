@@ -31,6 +31,7 @@ import org.jsmpp.extra.SessionState;
 import org.jsmpp.session.QuerySmResult;
 import org.jsmpp.session.ServerResponseHandler;
 import org.jsmpp.util.MessageId;
+import org.owasp.encoder.Encode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +73,7 @@ class SMPPServerSessionBoundTX extends SMPPServerSessionBound implements
         try {
             SubmitMulti submitMulti = pduDecomposer.submitMulti(pdu);
             SubmitMultiResult result = responseHandler.processSubmitMulti(submitMulti);
-            logger.debug("Sending response with message_id " + result.getMessageId() + " for request with sequence_number " + pduHeader.getSequenceNumber());
+            logger.debug("Sending response with message_id " + Encode.forJava(result.getMessageId()) + " for request with sequence_number " + pduHeader.getSequenceNumber());
             responseHandler.sendSubmitMultiResponse(result, pduHeader.getSequenceNumber());
         } catch (PDUStringException e) {
             responseHandler.sendNegativeResponse(pduHeader.getCommandId(), e.getErrorCode(), pduHeader.getSequenceNumber());

@@ -10,6 +10,7 @@ syntax:glob
 .gwt/
 .project
 .classpath
+.idea
 
 version.properties
 git.properties

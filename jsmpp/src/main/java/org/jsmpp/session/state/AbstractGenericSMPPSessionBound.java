@@ -31,6 +31,7 @@ import org.jsmpp.session.DataSmResult;
 import org.jsmpp.util.DefaultDecomposer;
 import org.jsmpp.util.IntUtil;
 import org.jsmpp.util.PDUDecomposer;
+import org.owasp.encoder.Encode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,7 +108,7 @@ abstract class AbstractGenericSMPPSessionBound implements GenericSMPPSessionStat
         try {
             DataSm dataSm = pduDecomposer.dataSm(pdu);
             DataSmResult dataSmResult = responseHandler.processDataSm(dataSm);
-            logger.debug("Sending response with message_id " + dataSmResult.getMessageId() + " for request with sequence_number " + pduHeader.getSequenceNumber());
+            logger.debug("Sending response with message_id " + Encode.forJava(dataSmResult.getMessageId()) + " for request with sequence_number " + pduHeader.getSequenceNumber());
             responseHandler.sendDataSmResp(dataSmResult, pduHeader.getSequenceNumber());
         } catch (PDUStringException e) {
             responseHandler.sendNegativeResponse(pduHeader.getCommandId(), e.getErrorCode(), pduHeader.getSequenceNumber());
